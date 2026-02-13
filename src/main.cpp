@@ -1,3 +1,5 @@
+/*PRIMER COMMIT */
+
 #include <Arduino.h>
 #include <SPI.h>
 #include <TFT_eSPI.h>
@@ -314,19 +316,25 @@ void touch_calibrate()
   uint8_t check = 0; // Inicializamos check en 0
 
   // 1. Verificar si existe el archivo de calibración usando el namespace fs::
-  if (SPIFFS.exists("/TouchCalData")) {
+  if (SPIFFS.exists("/TouchCalData"))
+  {
     fs::File f = SPIFFS.open("/TouchCalData", "r"); // Cambiado a fs::File
-    if (f) {
-      if (f.readBytes((char *)calData, 14) == 14) check = 1;
+    if (f)
+    {
+      if (f.readBytes((char *)calData, 14) == 14)
+        check = 1;
       f.close();
     }
   }
 
-  if (check && !Serial.available()) {
+  if (check && !Serial.available())
+  {
     // 2. Si el archivo existe, cargar los datos
     tft.setTouch(calData);
     Serial.println("Datos de calibracion cargados desde SPIFFS");
-  } else {
+  }
+  else
+  {
     // 3. Si no existe, ejecutar calibracion interactiva
     tft.fillScreen(TFT_BLACK);
     tft.setCursor(20, 0);
@@ -344,7 +352,8 @@ void touch_calibrate()
 
     // 4. Guardar los nuevos datos en SPIFFS usando fs::File
     fs::File f = SPIFFS.open("/TouchCalData", "w"); // Cambiado a fs::File
-    if (f) {
+    if (f)
+    {
       f.write((const unsigned char *)calData, 14);
       f.close();
       Serial.println("Calibracion completa y guardada.");
